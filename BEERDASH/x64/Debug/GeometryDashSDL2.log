@@ -1,8 +1,2 @@
 ﻿  Main.cpp
-C:\Users\wikto\BeerDASHv2\Main.cpp(183,27): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\wikto\BeerDASHv2\Main.cpp(184,27): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\wikto\BeerDASHv2\Main.cpp(185,27): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\wikto\BeerDASHv2\Main.cpp(186,27): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\wikto\BeerDASHv2\Main.cpp(187,27): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\wikto\BeerDASHv2\Main.cpp(188,28): warning C4305: 'argument': truncation from 'double' to 'float'
   GeometryDashSDL2.vcxproj -> C:\Users\wikto\BeerDASHv2\x64\Debug\BEERDASH.exe
