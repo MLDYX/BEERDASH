@@ -10,6 +10,7 @@
 // Project headers
 #include "WindowManager.h"
 #include "GameObject.h"
+#include "Maps.h"
 
 
 // Collision Detection
@@ -58,6 +59,16 @@ bool checkCollision(SDL_Rect a, SDL_Rect b)
 	return true;
 }
 
+void renderText(SDL_Renderer* renderer, TTF_Font* congratsFont, const std::string& message, SDL_Color color, int x, int y)
+{
+	SDL_Surface* textSurface = TTF_RenderText_Solid(congratsFont, message.c_str(), color);
+	SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+	SDL_Rect textRect = { x, y, textSurface->w, textSurface->h };
+	SDL_FreeSurface(textSurface);
+	SDL_RenderCopy(renderer, textTexture, nullptr, &textRect);
+	SDL_DestroyTexture(textTexture);
+}
+
 // Font Texture font
 SDL_Texture* createTextTexture(SDL_Renderer* renderer, TTF_Font* font, const std::string& text, SDL_Color color)
 {
@@ -101,12 +112,22 @@ int main()
 
 	// Load textures
 	SDL_Texture* menuTexture           = window.loadTexture("Resources/wybor_mapy_lato.png");
-	SDL_Texture* backgroundTexture     = window.loadTexture("Resources/tlo_lato.png");
 	SDL_Texture* playerTexture         = window.loadTexture("Resources/piwo.png");
-	SDL_Texture* groundTexture         = window.loadTexture("Resources/trawa.png");
-	SDL_Texture* obstacleSquareTexture = window.loadTexture("Resources/obstacle.png");
-	SDL_Texture* obstacleTriangleTexture = window.loadTexture("Resources/killers.png");
 
+	//Dana mapa w zale¿noœci od wybranej mapy
+	int mapFlag = 0;
+	
+	MapData mapa = loadMapaLato(window);
+
+	if (mapFlag == 0) {
+		MapData mapa = loadMapaLato(window);
+	}
+	/*else if (mapFlag == 1) {
+		MapData mapa = loadMapaJesien(window);
+	}
+	else if (mapFlag == 2) {
+		MapData mapa = loadMapaZima(window);
+	}*/
 	// Load Sound
 	Mix_Chunk* backgroundMusic = Mix_LoadWAV("Resources/Bossfight - Milky Ways.wav");
 	Mix_Chunk* laughSound = Mix_LoadWAV("Resources/laughing.wav");
@@ -118,6 +139,11 @@ int main()
 		std::cout << "Failed to load font! SDL_ttf Error: " << TTF_GetError() << std::endl;
 		return 1;
 	}
+	TTF_Font* congratsFont = TTF_OpenFont("Resources/NokiaKokia.ttf", 64);
+	if (congratsFont == nullptr) {
+		std::cout << "Failed to load font! SDL_ttf Error: " << TTF_GetError() << std::endl;
+		return 1;
+	}
 	SDL_Color textColor = { 255, 255, 255, 255 }; 
 
 
@@ -126,67 +152,6 @@ int main()
 
 	// Player initial position
 	GameObject player(Vector2f(20, 90), playerTexture);
-
-	// Ground tiles position
-	std::vector<GameObject> groundTiles;
-
-	float groundTileWidth = 30.0f;
-	int numGroundTiles = 140;
-
-	for (int i = 0; i < numGroundTiles; ++i)
-	{
-		float xPos = i * groundTileWidth;
-		groundTiles.push_back(GameObject(Vector2f(xPos, 200), groundTexture));
-	}
-
-	// Square obstacle position
-	std::vector<GameObject> obstacleSquare = {
-	GameObject(Vector2f(180, 170), obstacleSquareTexture),
-	GameObject(Vector2f(300, 140), obstacleSquareTexture),
-	GameObject(Vector2f(360, 110), obstacleSquareTexture),
-	GameObject(Vector2f(390, 110), obstacleSquareTexture),
-	GameObject(Vector2f(420, 140), obstacleSquareTexture),
-	GameObject(Vector2f(420, 170), obstacleSquareTexture),
-	GameObject(Vector2f(450, 110), obstacleSquareTexture),
-	GameObject(Vector2f(480, 110), obstacleSquareTexture),
-	GameObject(Vector2f(480, 110), obstacleSquareTexture),
-	GameObject(Vector2f(600, 110), obstacleSquareTexture),
-	GameObject(Vector2f(630, 110), obstacleSquareTexture),
-	GameObject(Vector2f(660, 110), obstacleSquareTexture),
-	GameObject(Vector2f(180 + 600, 170), obstacleSquareTexture),
-	GameObject(Vector2f(300 + 600, 140), obstacleSquareTexture),
-	GameObject(Vector2f(360 + 600, 110), obstacleSquareTexture),
-	GameObject(Vector2f(390 + 600, 110), obstacleSquareTexture),
-	GameObject(Vector2f(420 + 600, 140), obstacleSquareTexture),
-	GameObject(Vector2f(420 + 600, 170), obstacleSquareTexture),
-	GameObject(Vector2f(450 + 600, 110), obstacleSquareTexture),
-	GameObject(Vector2f(480 + 600, 110), obstacleSquareTexture),
-	GameObject(Vector2f(480 + 600, 110), obstacleSquareTexture),
-	GameObject(Vector2f(600 + 600, 110), obstacleSquareTexture),
-	GameObject(Vector2f(630 + 600, 110), obstacleSquareTexture),
-	GameObject(Vector2f(660 + 600, 110), obstacleSquareTexture),
-	GameObject(Vector2f(180 + 600 + 600, 170), obstacleSquareTexture),
-	GameObject(Vector2f(300 + 600 + 600, 140), obstacleSquareTexture),
-	GameObject(Vector2f(360 + 600 + 600, 110), obstacleSquareTexture),
-	GameObject(Vector2f(390 + 600 + 600, 110), obstacleSquareTexture),
-	GameObject(Vector2f(420 + 600 + 600, 140), obstacleSquareTexture),
-	GameObject(Vector2f(420 + 600 + 600, 170), obstacleSquareTexture),
-	GameObject(Vector2f(450 + 600 + 600, 110), obstacleSquareTexture),
-	GameObject(Vector2f(480 + 600 + 600, 110), obstacleSquareTexture),
-	GameObject(Vector2f(480 + 600 + 600, 110), obstacleSquareTexture),
-	GameObject(Vector2f(600 + 600 + 600, 110), obstacleSquareTexture),
-	GameObject(Vector2f(630 + 600 + 600, 110), obstacleSquareTexture)
-	};
-
-	// Triangle obstacle position
-	std::vector<GameObject> obstacleTriangle = {
-	GameObject(Vector2f(240, 170.2), obstacleTriangleTexture),
-	GameObject(Vector2f(270, 170.2), obstacleTriangleTexture),
-	GameObject(Vector2f(420, 110.2), obstacleTriangleTexture),
-	GameObject(Vector2f(840, 170.2), obstacleTriangleTexture),
-	GameObject(Vector2f(870, 170.2), obstacleTriangleTexture),
-	GameObject(Vector2f(1020, 110.2), obstacleTriangleTexture)
-	};
 
 	// GameLoop variables
 	bool isGameRunning = true;
@@ -225,6 +190,7 @@ int main()
 	float cameraX = 0.0f;
 	float cameraSpeed;
 	cameraSpeed = speed;
+	SDL_Texture* congratsTexture = nullptr;
 
 	/*while (menuRunning)
 	{
@@ -311,10 +277,10 @@ int main()
 		window.clear();
 
 		// Render background
-		window.renderBackground(backgroundTexture);
+		window.renderBackground(mapa.backgroundTexture);
 
 		// Render floor tiles
-		for (GameObject& gt : groundTiles)
+		for (GameObject& gt : mapa.groundTiles)
 		{
 			window.render(gt, cameraX);
 		}
@@ -323,7 +289,7 @@ int main()
 		SDL_Rect playerRect = window.render(player, cameraX);
 
 		// Render square obstacles
-		for (GameObject& os : obstacleSquare)
+		for (GameObject& os : mapa.obstacleSquare)
 		{
 
 			SDL_Rect obstacleRect = window.render(os, cameraX);
@@ -375,7 +341,7 @@ int main()
 	}
 
 		// Render triangle Obstacles
-		for (GameObject& ott : obstacleTriangle)
+		for (GameObject& ott : mapa.obstacleTriangle)
 		{
 			SDL_Rect obstacleTriangleRect = window.render(ott, cameraX);
 			if (checkCollision(playerRect, obstacleTriangleRect))
@@ -406,6 +372,11 @@ int main()
 			}
 		}
 
+		for (GameObject& fin : mapa.finish) 
+		{
+			window.render(fin, cameraX);
+		}
+
 		// When the player arrives at the end
 		if (player.getPos().x >= 4250)
 		{
@@ -430,18 +401,39 @@ int main()
 		// Process count
 		float percentage = (player.getPos().x / 4250.0f) * 100.0f;
 		std::string percentageText = "PROGRESS " + std::to_string(static_cast<int>(percentage)) + "%";
-
-		//std::cout << percentageText << std::endl;
+		
+		std::string congratsText = "GRATULACJE";
 
 		// Font rendering
 		SDL_Texture* textTexture = createTextTexture(window.getRenderer(), font, percentageText, textColor);
 
-		if (textTexture != nullptr) {
+		if (textTexture != nullptr) 
+		{
 			int textWidth = 0, textHeight = 0;
 			SDL_QueryTexture(textTexture, nullptr, nullptr, &textWidth, &textHeight);
 			SDL_Rect textRect = { 10, 10, textWidth, textHeight };
 			SDL_RenderCopy(window.getRenderer(), textTexture, nullptr, &textRect);
 			SDL_DestroyTexture(textTexture);
+		}
+
+		if (percentage >= 100.0f && congratsTexture == nullptr)
+		{
+			std::string message = "GRATULACJE";
+			congratsTexture = createTextTexture(window.getRenderer(), congratsFont, message, textColor);
+		}
+
+		// Render the congrats message if the texture is created
+		if (congratsTexture != nullptr)
+		{
+			int screenWidth = 1920; // Assuming screen width
+			int screenHeight = 1080; // Assuming screen height
+			int textWidth = 0;
+			int textHeight = 0;
+			SDL_QueryTexture(congratsTexture, nullptr, nullptr, &textWidth, &textHeight);
+			int x = (screenWidth - textWidth) / 2;
+			int y = (screenHeight - textHeight) / 2;
+			SDL_Rect textRect = { x, y, textWidth, textHeight };
+			SDL_RenderCopy(window.getRenderer(), congratsTexture, nullptr, &textRect);
 		}
 
 		// Display Render
@@ -453,6 +445,8 @@ int main()
 	Mix_FreeChunk(backgroundMusic);
 	Mix_FreeChunk(laughSound);
 	Mix_FreeChunk(clapSound);
+	TTF_CloseFont(font);
+	TTF_CloseFont(congratsFont);
 	IMG_Quit();
 	Mix_Quit();
 	SDL_Quit();

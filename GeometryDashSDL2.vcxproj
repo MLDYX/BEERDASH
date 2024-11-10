@@ -150,10 +150,12 @@
   <ItemGroup>
     <ClCompile Include="GameObjects.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Maps.cpp" />
     <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Maps.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="WindowManager.h" />
   </ItemGroup>
