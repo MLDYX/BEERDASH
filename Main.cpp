@@ -35,22 +35,22 @@ bool checkCollision(SDL_Rect a, SDL_Rect b)
 	bottomB = b.y + b.h;
 
 	//If any of the sides from A are outside of B
-	if (bottomA < topB)
+	if (bottomA <= topB)
 	{
 		return false;
 	}
 
-	if (topA > bottomB)
+	if (topA >= bottomB)
 	{
 		return false;
 	}
 
-	if (rightA < leftB)
+	if (rightA <= leftB)
 	{
 		return false;
 	}
 
-	if (leftA > rightB)
+	if (leftA >= rightB)
 	{
 		return false;
 	}
@@ -111,27 +111,61 @@ int main()
 
 
 	// Load textures
-	SDL_Texture* menuTexture           = window.loadTexture("Resources/wybor_mapy_lato.png");
+	SDL_Texture* menuTextureLato = window.loadTexture("Resources/wybor_mapy_lato.png");
+	SDL_Texture* menuTextureJesien = window.loadTexture("Resources/wybor_mapy_jesien.png");
+	SDL_Texture* menuTextureZima = window.loadTexture("Resources/wybor_mapy_zima.png");
 	SDL_Texture* playerTexture         = window.loadTexture("Resources/piwo.png");
 
-	//Dana mapa w zale¿noœci od wybranej mapy
-	int mapFlag = 0;
-	
-	MapData mapa = loadMapaLato(window);
-
-	if (mapFlag == 0) {
-		MapData mapa = loadMapaLato(window);
-	}
-	/*else if (mapFlag == 1) {
-		MapData mapa = loadMapaJesien(window);
-	}
-	else if (mapFlag == 2) {
-		MapData mapa = loadMapaZima(window);
-	}*/
 	// Load Sound
 	Mix_Chunk* backgroundMusic = Mix_LoadWAV("Resources/Bossfight - Milky Ways.wav");
 	Mix_Chunk* laughSound = Mix_LoadWAV("Resources/laughing.wav");
 	Mix_Chunk* clapSound = Mix_LoadWAV("Resources/clap.wav");
+
+	bool isGameRunning = false;
+	bool menuRunning = true;
+
+	SDL_Event event;
+
+	int mapFlag = 0;
+	std::vector<SDL_Texture*> menuTextures = { menuTextureLato/*, menuTextureJesien, menuTextureZima */ };
+
+	while (menuRunning)
+	{
+		window.renderBackground(menuTextures[mapFlag]);
+		while (SDL_PollEvent(&event))
+		{
+			if (event.type == SDL_QUIT)
+			{
+				isGameRunning = false;
+				menuRunning = false;
+			}
+			else if (event.type == SDL_KEYDOWN)
+			{
+				if (event.key.keysym.sym == SDLK_RIGHT)
+				{
+					mapFlag = (mapFlag + 1) % menuTextures.size();
+				}
+				else if (event.key.keysym.sym == SDLK_RETURN)
+				{
+					menuRunning = false;
+					SDL_Delay(100);
+					isGameRunning = true;
+				}
+			}
+		}
+		window.display();
+	}
+
+	MapData mapa;
+	if (mapFlag == 0) {
+		mapa = loadMapaLato(window);
+	}
+	//else if (mapFlag == 1) {
+	//	mapa = loadMapaJesien(window);
+	//}
+	//else if (mapFlag == 2) {
+	//	mapa = loadMapaZima(window);
+	//}
 
 	//Load Font
 	TTF_Font* font = TTF_OpenFont("Resources/NokiaKokia.ttf", 24);
@@ -154,11 +188,8 @@ int main()
 	GameObject player(Vector2f(20, 90), playerTexture);
 
 	// GameLoop variables
-	bool isGameRunning = true;
-	bool menuRunning = true;
 	bool upsideDown = false;
 	Uint32 lastTime = SDL_GetTicks();
-	SDL_Event event;
 
 	//Player movement variables
 	float jumpVelocity = -280.0f;
@@ -185,6 +216,7 @@ int main()
 
 	// Collision Detection
 	bool collisionDetected = false;
+	bool isDead = false;
 
 	//Camera variables
 	float cameraX = 0.0f;
@@ -192,30 +224,9 @@ int main()
 	cameraSpeed = speed;
 	SDL_Texture* congratsTexture = nullptr;
 
-	/*while (menuRunning)
-	{
-		window.renderBackground(menuTexture);
-		while (SDL_PollEvent(&event))
-		{
-			if (event.type = SDL_QUIT)
-			{
-				isGameRunning = false;
-			}
-			else if (event.type = SDL_KEYDOWN)
-			{
-				if (event.key.keysym.sym == SDLK_KP_ENTER)
-				{
-					menuRunning = false;
-				}
-			}
-		}
-	}*/
-
-	// GameLoop
-	while (isGameRunning)
+	while (isGameRunning && !menuRunning)
 	{
 		//DOROBIÆ KOLEJNY WHILE LOOP Z FLAG¥ isMenuRunning i dopóki user nie wciœnie enter pokazywaæ menu
-
 		Uint32 currentTime = SDL_GetTicks();
 		float deltaTime = (currentTime - lastTime) / 1000.0f;
 		lastTime = currentTime;
@@ -294,51 +305,63 @@ int main()
 
 			SDL_Rect obstacleRect = window.render(os, cameraX);
 		    if (checkCollision(playerRect, obstacleRect))
-		{
-			// When the player collides vertically
-			if (player.getPos().y + player.getObjectSize().h > os.getPos().y &&
-				player.getPos().y < os.getPos().y)
 			{
-				velocityY = 0; 
-				isJumping = false;
-				if (player.getPos().y >= 150)
+				// When the player collides vertically
+				if (player.getPos().y + player.getObjectSize().h > os.getPos().y &&
+					player.getPos().y < os.getPos().y)
 				{
-					player.getPos().y = 170; 
-					isOnGround = true; 
+					velocityY = 0; 
+					isJumping = false;
+					if (player.getPos().y >= 160)
+					{
+						player.getPos().y = 170; 
+						isOnGround = true; 
+					}
+					else if (player.getPos().y <= 145 && player.getPos().y >= 135)
+					{
+						player.getPos().y = 140;
+						isOnGround = true;
+					}
+					else if (player.getPos().y >= 105 && player.getPos().y <= 115)
+					{
+						player.getPos().y = 110;
+						isOnGround = true;
+					}
+					else if (player.getPos().y >= 75 && player.getPos().y <= 85)
+					{
+						player.getPos().y = 80;
+						isOnGround = true;
+					}
+					else
+					{
+						isOnGround = false;
+						speed = 0.0f;
+						cameraSpeed = 0.0f;
+						velocityY = 0;
+						gravity = 0;
+						targetRotation = 180.0f;
+						player.setRotation(180.0f);
+						isDead = true;
+					}
 				}
-				else if (player.getPos().y <= 145 && player.getPos().y >= 135)
+
+				// When the player collides horizontally
+
+				else if (player.getPos().x + player.getObjectSize().w > os.getPos().x &&
+					player.getPos().x < os.getPos().x + os.getObjectSize().w)
 				{
-					player.getPos().y = 140;
-					isOnGround = true;
-				}
-				else if ((player.getPos().y >= 100 && player.getPos().y <= 125))
-				{
-					player.getPos().y = 110;
-					isOnGround = true;
-				}
-				else if ((player.getPos().y >= 65 && player.getPos().y <= 90))
-				{
-					player.getPos().y = 80;
-					isOnGround = true;
-				}
-				else
-				{
-					isOnGround = false;
+					speed = 0.0f;
+					cameraSpeed = 0.0f;
+					velocityY = 0;
+					gravity = 0;
+					targetRotation = 180.0f;
+					player.setRotation(180.0f);
+					isDead = true;
 				}
 			}
 
-			// When the player collides horizontally
-
-			else if (player.getPos().x + player.getObjectSize().w > os.getPos().x &&
-				player.getPos().x < os.getPos().x + (os.getObjectSize().w))
-			{
-				speed = 0.0f;
-				cameraSpeed = 0.0f;
-			}
+			collisionDetected = true;
 		}
-
-		collisionDetected = true;
-	}
 
 		// Render triangle Obstacles
 		for (GameObject& ott : mapa.obstacleTriangle)
@@ -351,30 +374,53 @@ int main()
 				if (player.getPos().y + player.getObjectSize().h > ott.getPos().y &&
 					player.getPos().y < ott.getPos().y + (ott.getObjectSize().h))
 				{
-
 					speed = 0.0f;
 					cameraSpeed = 0.0f;
-
+					velocityY = 0;
+					gravity = 0;
+					targetRotation = 180.0f;
+					player.setRotation(180.0f);
 				}
 
 				// When the player collides horizontally
-				if (player.getPos().x + player.getObjectSize().w> ott.getPos().x  &&
+				if (player.getPos().x + player.getObjectSize().w > ott.getPos().x  &&
 					player.getPos().x < ott.getPos().x + (ott.getObjectSize().w ))
 				{
-
 					speed = 0.0f;
 					cameraSpeed = 0.0f;
-
-
+					velocityY = 0;
+					gravity = 0;
+					targetRotation = 180.0f;
+					player.setRotation(180.0f);
 				}
-
 				collisionDetected = true;
+				isDead = true;
 			}
 		}
 
 		for (GameObject& fin : mapa.finish) 
 		{
 			window.render(fin, cameraX);
+		}
+
+		if (isDead && congratsTexture == nullptr)
+		{
+			std::string message = "PIWO SIE WYLALO";
+			congratsTexture = createTextTexture(window.getRenderer(), congratsFont, message, textColor);
+		}
+
+		// Render the congrats message if the texture is created
+		if (congratsTexture != nullptr)
+		{
+			int screenWidth = 1920;
+			int screenHeight = 1080;
+			int textWidth = 0;
+			int textHeight = 0;
+			SDL_QueryTexture(congratsTexture, nullptr, nullptr, &textWidth, &textHeight);
+			int x = (screenWidth - textWidth) / 2;
+			int y = (screenHeight - textHeight) / 2;
+			SDL_Rect textRect = { x, y, textWidth, textHeight };
+			SDL_RenderCopy(window.getRenderer(), congratsTexture, nullptr, &textRect);
 		}
 
 		// When the player arrives at the end
@@ -384,7 +430,6 @@ int main()
 			cameraSpeed = 0.0f;
 			int clapChannel = Mix_PlayChannel(-1, clapSound, 0);
 			Mix_HaltChannel(musicChannel);
-
 		}
 
 		// When the player loses/end level
@@ -425,8 +470,8 @@ int main()
 		// Render the congrats message if the texture is created
 		if (congratsTexture != nullptr)
 		{
-			int screenWidth = 1920; // Assuming screen width
-			int screenHeight = 1080; // Assuming screen height
+			int screenWidth = 1920;
+			int screenHeight = 1080;
 			int textWidth = 0;
 			int textHeight = 0;
 			SDL_QueryTexture(congratsTexture, nullptr, nullptr, &textWidth, &textHeight);
@@ -441,12 +486,16 @@ int main()
 
 	}
 	// Clean and delete
-	window.cleanUp();
+	SDL_DestroyTexture(menuTextureLato);
+	SDL_DestroyTexture(playerTexture);
+	SDL_DestroyTexture(congratsTexture);
 	Mix_FreeChunk(backgroundMusic);
 	Mix_FreeChunk(laughSound);
 	Mix_FreeChunk(clapSound);
 	TTF_CloseFont(font);
 	TTF_CloseFont(congratsFont);
+	window.cleanUp();
+	Mix_CloseAudio();
 	IMG_Quit();
 	Mix_Quit();
 	SDL_Quit();
