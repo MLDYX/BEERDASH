@@ -122,6 +122,7 @@ int main()
 	Mix_Chunk* backgroundMusic = Mix_LoadWAV("Resources/Bossfight - Milky Ways.wav");
 	Mix_Chunk* laughSound = Mix_LoadWAV("Resources/laughing.wav");
 	Mix_Chunk* clapSound = Mix_LoadWAV("Resources/clap.wav");
+	Mix_Chunk* starSound = Mix_LoadWAV("Resources/smb_coin.wav");
 
 	bool isGameRunning = false;
 	bool menuRunning = true;
@@ -415,6 +416,7 @@ int main()
 			if (checkCollision(playerRect, starRect1) && star1Collected == 0)
 			{
 				stars.collectStar1();
+				int starChannel = Mix_PlayChannel(-1, starSound, 0);
 				star1Collected = 1;
 				if (!mapa.stars.empty()) {
 					mapa.stars.erase(mapa.stars.begin());
