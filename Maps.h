@@ -8,6 +8,7 @@ struct MapData {
 	std::vector<GameObject> obstacleSquare;
 	std::vector<GameObject> obstacleTriangle;
 	std::vector<GameObject> groundTiles;
+	std::vector<GameObject> stars;
 	std::vector<GameObject> finish;
 };
 

@@ -6,11 +6,13 @@
 #include <vector>
 #include <iostream>
 #include <sstream>
+#include <iomanip>
 
 // Project headers
 #include "WindowManager.h"
 #include "GameObject.h"
 #include "Maps.h"
+#include "Stars.h"
 
 
 // Collision Detection
@@ -123,7 +125,8 @@ int main()
 
 	bool isGameRunning = false;
 	bool menuRunning = true;
-
+	
+	Stars stars;
 	SDL_Event event;
 
 	int mapFlag = 0;
@@ -397,6 +400,49 @@ int main()
 				isDead = true;
 			}
 		}
+
+
+
+		//Logika zbierania gwiazdek
+		int counterForStars = 0;
+		int star1Collected = 0;
+		int star2Collected = 2;
+		int star3Collected = 4;
+
+		SDL_Rect starRect1 = window.render(mapa.stars[0], cameraX);
+
+		if (checkCollision(playerRect, starRect1))
+		{	
+			stars.collectStar(star1Collected);
+			star1Collected = 1;
+		}
+
+		/*SDL_Rect starRect2 = window.render(mapa.stars[0], cameraX);
+
+		if (checkCollision(playerRect, starRect1))
+		{
+			stars.collectStar();
+		}
+
+		SDL_Rect starRect3 = window.render(mapa.stars[0], cameraX);
+
+		if (checkCollision(playerRect, starRect1))
+		{
+			stars.collectStar();
+		}*/
+
+		std::ostringstream oss;
+		oss << std::fixed << std::setprecision(1) << stars.getStarCount();
+		renderText(window.getRenderer(), font, "OCENA " + oss.str(), textColor, 1710, 10);
+
+			//std::string percentageText = "PROGRESS " + std::to_string(static_cast<int>(percentage)) + "%";
+
+			//std::string congratsText = "GRATULACJE";
+
+			//// Font rendering
+			//SDL_Texture* textTexture = createTextTexture(window.getRenderer(), font, percentageText, textColor);
+
+			//collisionDetected = true;
 
 		for (GameObject& fin : mapa.finish) 
 		{

@@ -7,6 +7,7 @@ MapData loadMapaLato(RenderWindow& window)
 	SDL_Texture* groundTexture = window.loadTexture("Resources/trawa.png");
 	SDL_Texture* obstacleSquareTexture = window.loadTexture("Resources/obstacle.png");
 	SDL_Texture* obstacleTriangleTexture = window.loadTexture("Resources/killers.png");
+	SDL_Texture* starTexture = window.loadTexture("Resources/gwiazdka.png");
 	SDL_Texture* finFinish = window.loadTexture("Resources/fin.png");
 	SDL_Texture* ishFinish = window.loadTexture("Resources/ish.png");
 	mapData.backgroundTexture = window.loadTexture("Resources/tlo_lato.png");
@@ -58,6 +59,8 @@ MapData loadMapaLato(RenderWindow& window)
 
 	mapData.obstacleTriangle.push_back(GameObject(Vector2f(240, 170.2), obstacleTriangleTexture));
 	mapData.obstacleTriangle.push_back(GameObject(Vector2f(270, 170.2), obstacleTriangleTexture));
+
+	mapData.stars.push_back(GameObject(Vector2f(180, 140), starTexture));
 
 	mapData.finish.push_back(GameObject(Vector2f(4220, 80), finFinish));
 	mapData.finish.push_back(GameObject(Vector2f(4250, 80), ishFinish));
