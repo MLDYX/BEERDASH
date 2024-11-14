@@ -61,6 +61,7 @@ MapData loadMapaLato(RenderWindow& window)
 	mapData.obstacleTriangle.push_back(GameObject(Vector2f(270, 170.2), obstacleTriangleTexture));
 
 	mapData.stars.push_back(GameObject(Vector2f(180, 140), starTexture));
+	mapData.stars.push_back(GameObject(Vector2f(680, 140), starTexture));
 
 	mapData.finish.push_back(GameObject(Vector2f(4220, 80), finFinish));
 	mapData.finish.push_back(GameObject(Vector2f(4250, 80), ishFinish));

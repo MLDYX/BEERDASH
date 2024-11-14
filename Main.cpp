@@ -409,13 +409,24 @@ int main()
 		int star2Collected = 2;
 		int star3Collected = 4;
 
-		SDL_Rect starRect1 = window.render(mapa.stars[0], cameraX);
-
-		if (checkCollision(playerRect, starRect1))
-		{	
-			stars.collectStar(star1Collected);
-			star1Collected = 1;
+		for (GameObject& star : mapa.stars)
+		{
+			SDL_Rect starRect1 = window.render(star, cameraX);
+			if (checkCollision(playerRect, starRect1) && star1Collected == 0)
+			{
+				stars.collectStar1();
+				star1Collected = 1;
+				if (!mapa.stars.empty()) {
+					mapa.stars.erase(mapa.stars.begin());
+				}
+			}
 		}
+
+
+
+		
+
+		
 
 		/*SDL_Rect starRect2 = window.render(mapa.stars[0], cameraX);
 

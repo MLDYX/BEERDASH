@@ -4,10 +4,15 @@
 class Stars {
 public:
     Stars();
-    void collectStar(int starCollected);
+    void collectStar1();
+    void collectStar2();
+    void collectStar3();
     void saveProgress() const;
     void loadProgress();
     float getStarCount() const;
+    int star1;
+    int star2;
+    int star3;
 
 private:
     float starCount;

@@ -2,22 +2,36 @@
 #include <SDL.h>
 #include <fstream>
 #include <iostream>
+#include <Windows.h>
 
 Stars::Stars() : starCount(2.0) {
     loadProgress();
 }
 
-void Stars::collectStar(int starCollected) {
-    if (starCount == 2.0 && starCollected == 0) {
+void Stars::collectStar1() {
+    if (starCount == 2.0 && star1 != 1) {
         starCount = 3.0;
     }
-    if (starCount == 3.0 && starCollected == 2) {
+
+    saveProgress();
+    star1 = 1;
+}
+void Stars::collectStar2() {
+    if (starCount == 3.0 && star2 != 1) {
         starCount = 4.0;
     }
-    if (starCount == 4.0 && starCollected == 4) {
+
+    saveProgress();
+    star2 = 1;
+}
+
+void Stars::collectStar3() {
+    if (starCount == 4.0 && star3 != 1) {
         starCount = 5.0;
+
     }
     saveProgress();
+    star3 = 1;
 }
 
 void Stars::saveProgress() const {
