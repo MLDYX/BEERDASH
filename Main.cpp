@@ -221,6 +221,9 @@ int main()
 	// Collision Detection
 	bool collisionDetected = false;
 	bool isDead = false;
+	int star1Collected = 0;
+	int star2Collected = 2;
+	int star3Collected = 4;
 
 	//Camera variables
 	float cameraX = 0.0f;
@@ -405,27 +408,60 @@ int main()
 
 
 		//Logika zbierania gwiazdek
-		int counterForStars = 0;
-		int star1Collected = 0;
-		int star2Collected = 2;
-		int star3Collected = 4;
 
-		for (GameObject& star : mapa.stars)
+
+		//for (GameObject& star : mapa.stars)
+		//{
+		//	SDL_Rect starRect1 = window.render(star, cameraX);
+		//	if (checkCollision(playerRect, starRect1) && star1Collected == 0)
+		//	{
+		//		stars.collectStar1();
+		//		int starChannel = Mix_PlayChannel(-1, starSound, 0);
+		//		star1Collected = 1;
+		//		if (!mapa.stars.empty()) {
+		//			mapa.stars.erase(mapa.stars.begin());
+		//		}
+		//	}
+		//}
+
+		SDL_Rect starRect1 = window.render(mapa.stars[0], cameraX);
+
+		if (checkCollision(playerRect, starRect1) && star1Collected == 0)
 		{
-			SDL_Rect starRect1 = window.render(star, cameraX);
-			if (checkCollision(playerRect, starRect1) && star1Collected == 0)
-			{
-				stars.collectStar1();
-				int starChannel = Mix_PlayChannel(-1, starSound, 0);
-				star1Collected = 1;
-				if (!mapa.stars.empty()) {
-					mapa.stars.erase(mapa.stars.begin());
-				}
+			stars.collectStar1();
+			int starChannel = Mix_PlayChannel(-1, starSound, 0);
+			star1Collected = 1;
+			mapa.stars.push_back(mapa.stars[0]);
+			if (!mapa.stars.empty()) {
+				mapa.stars.erase(mapa.stars.begin());
 			}
 		}
 
+		SDL_Rect starRect2 = window.render(mapa.stars[0], cameraX);
 
+		if (checkCollision(playerRect, starRect2) && star2Collected == 2)
+		{
+			stars.collectStar2();
+			int starChannel = Mix_PlayChannel(-1, starSound, 0);
+			star2Collected = 3;
+			mapa.stars.push_back(mapa.stars[0]);
+			if (!mapa.stars.empty()) {
+				mapa.stars.erase(mapa.stars.begin());
+			}
+		}
 
+		SDL_Rect starRect3 = window.render(mapa.stars[0], cameraX);
+
+		if (checkCollision(playerRect, starRect3) && star3Collected == 4)
+		{
+			stars.collectStar3();
+			int starChannel = Mix_PlayChannel(-1, starSound, 0);
+			star3Collected = 4;
+			mapa.stars.push_back(mapa.stars[0]);
+			if (!mapa.stars.empty()) {
+				mapa.stars.erase(mapa.stars.begin());
+			}
+		}
 		
 
 		

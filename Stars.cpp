@@ -9,29 +9,27 @@ Stars::Stars() : starCount(2.0) {
 }
 
 void Stars::collectStar1() {
-    if (starCount == 2.0 && star1 != 1) {
+    if (starCount == 2.0) {
         starCount = 3.0;
     }
 
     saveProgress();
-    star1 = 1;
 }
+
 void Stars::collectStar2() {
-    if (starCount == 3.0 && star2 != 1) {
+    if (starCount == 3.0) {
         starCount = 4.0;
     }
 
     saveProgress();
-    star2 = 1;
 }
 
 void Stars::collectStar3() {
-    if (starCount == 4.0 && star3 != 1) {
+    if (starCount == 4.0) {
         starCount = 5.0;
 
     }
     saveProgress();
-    star3 = 1;
 }
 
 void Stars::saveProgress() const {
