@@ -1,2 +1,8 @@
-﻿  Main.cpp
+﻿  Stars.cpp
+C:\Users\wikto\BeerDASHv2\Stars.cpp(16,75): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\wikto\BeerDASHv2\Stars.cpp(16,98): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\wikto\BeerDASHv2\Stars.cpp(16,119): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\wikto\BeerDASHv2\Stars.cpp(57,12): warning C4244: 'return': conversion from 'const int' to 'float', possible loss of data
+C:\Users\wikto\BeerDASHv2\Stars.cpp(61,12): warning C4244: 'return': conversion from 'const int' to 'float', possible loss of data
+C:\Users\wikto\BeerDASHv2\Stars.cpp(65,12): warning C4244: 'return': conversion from 'const int' to 'float', possible loss of data
   GeometryDashSDL2.vcxproj -> C:\Users\wikto\BeerDASHv2\x64\Debug\BEERDASH.exe
