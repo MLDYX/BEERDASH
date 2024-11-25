@@ -1,1 +1,6 @@
-ÙÒÔÔÔÔÔÔ
+lato:1,2,
+jesien:1,
+zima:1,
+latoStarCount:4
+jesienStarCount:3
+zimaStarCount:3
