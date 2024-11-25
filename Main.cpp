@@ -339,17 +339,17 @@ int main()
 							player.getPos().y = 170;
 							isOnGround = true;
 						}
-						else if (player.getPos().y <= 145 && player.getPos().y >= 135)
+						else if (player.getPos().y <= 150 && player.getPos().y >= 130)
 						{
 							player.getPos().y = 140;
 							isOnGround = true;
 						}
-						else if (player.getPos().y >= 105 && player.getPos().y <= 115)
+						else if (player.getPos().y >= 100 && player.getPos().y <= 120)
 						{
 							player.getPos().y = 110;
 							isOnGround = true;
 						}
-						else if (player.getPos().y >= 75 && player.getPos().y <= 85)
+						else if (player.getPos().y >= 70 && player.getPos().y <= 90)
 						{
 							player.getPos().y = 80;
 							isOnGround = true;
