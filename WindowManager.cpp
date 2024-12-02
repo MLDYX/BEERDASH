@@ -4,7 +4,7 @@
 #include "WindowManager.h"
 
 
-// Render Window
+// Renderowanie okna
 RenderWindow::RenderWindow(const char* p_title, int p_w, int p_h)
     : window(nullptr), renderer(nullptr)
 {
@@ -12,7 +12,7 @@ RenderWindow::RenderWindow(const char* p_title, int p_w, int p_h)
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 }
 
-// Load texture
+// Wczytywanie tekstury
 SDL_Texture* RenderWindow::loadTexture(const char* p_filePath)
 {
     SDL_Texture* texture = IMG_LoadTexture(renderer, p_filePath);
@@ -25,7 +25,7 @@ SDL_Texture* RenderWindow::loadTexture(const char* p_filePath)
     return texture;
 }
 
-// Clean up resources
+// Czyszczenie pamiêci itp
 void RenderWindow::cleanUp()
 {
     if (renderer != nullptr) 
@@ -38,7 +38,7 @@ void RenderWindow::cleanUp()
     }
 }
 
-// Clear screen
+// Czyszczenie okna
 void RenderWindow::clear()
 {
     if (renderer != nullptr)
@@ -46,7 +46,7 @@ void RenderWindow::clear()
         SDL_RenderClear(renderer);
     }
 }
-// Render game Objects
+// Renderowanie obiektów na obraz
 SDL_Rect RenderWindow::render(GameObject& p_gameObject, float cameraX)
 {
     SDL_Rect spriteFrame = p_gameObject.getObjectSize();
@@ -63,7 +63,7 @@ SDL_Rect RenderWindow::render(GameObject& p_gameObject, float cameraX)
 }
 
 
-// Display rendered content
+// Pokazywanie na obrazie
 void RenderWindow::display()
 {
     if (renderer != nullptr) 
@@ -72,7 +72,7 @@ void RenderWindow::display()
     }
 }
 
-// Render Background image
+// Renderowanie t³a
 void RenderWindow::renderBackground(SDL_Texture* backgroundTexture)
 {
     SDL_Rect TargetRec;
@@ -84,7 +84,7 @@ void RenderWindow::renderBackground(SDL_Texture* backgroundTexture)
     SDL_RenderCopy(renderer, backgroundTexture, nullptr, &TargetRec);
 }
 
-// Returns the renderer pointer
+// Zwracanie wskaŸnika na renderer
 SDL_Renderer* RenderWindow::getRenderer() const
 {
     return renderer;

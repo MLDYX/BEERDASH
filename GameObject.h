@@ -4,7 +4,7 @@
 #include <SDL_image.h>
 #include "Vector2.h"
 
-//everything rendererd to the screen
+//Renderowanie obiektów na obraz
 class GameObject
 {
 public:

@@ -24,12 +24,9 @@ public:
 
 private:
     float starCount;
-    std::unordered_map<std::string, std::unordered_set<int>> collectedStars; // Map to track collected stars for each map
+    std::unordered_map<std::string, std::unordered_set<int>> collectedStars;
     std::unordered_map<std::string, int> starCounts;
-    std::string encrypt(const std::string& data, int shift) const;
-    std::string decrypt(const std::string& data, int shift) const;
     const std::string progressFile = "progress.txt";
-    const int cipherShift = 420;
 
     int latoStarCount;
     int jesienStarCount;

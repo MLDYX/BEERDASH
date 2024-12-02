@@ -2,16 +2,9 @@
 #include <SDL.h>
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include <Windows.h>
 
-#include "Stars.h"
-#include <fstream>
-#include <sstream>
-#include <iostream>
-
-#include "Stars.h"
-#include <fstream>
-#include <sstream>
 
 Stars::Stars() : star1(0), star2(0), star3(0), starCount(0), latoStarCount(2.0f), jesienStarCount(2.0f), zimaStarCount(2.0f) {
     loadProgress();
@@ -124,20 +117,4 @@ float Stars::getStarCount() const {
 
 bool Stars::isStarCollected(const std::string& map, int star) const {
     return collectedStars.at(map).find(star) != collectedStars.at(map).end();
-}
-
-std::string Stars::encrypt(const std::string& data, int shift) const {
-    std::string result = data;
-    for (char& c : result) {
-        c += shift;
-    }
-    return result;
-}
-
-std::string Stars::decrypt(const std::string& data, int shift) const {
-    std::string result = data;
-    for (char& c : result) {
-        c -= shift;
-    }
-    return result;
 }

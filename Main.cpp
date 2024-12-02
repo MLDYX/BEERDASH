@@ -8,35 +8,35 @@
 #include <sstream>
 #include <iomanip>
 
-// Project headers
+// Pliki nag³ówkowe
 #include "WindowManager.h"
 #include "GameObject.h"
 #include "Maps.h"
 #include "Stars.h"
 
 
-// Collision Detection
+// Detekcja kolizji
 bool checkCollision(SDL_Rect a, SDL_Rect b)
 {
-	//The sides of the rectangles
+	//Boki kwadratów
 	int leftA, leftB;
 	int rightA, rightB;
 	int topA, topB;
 	int bottomA, bottomB;
 
-	//Calculate the sides of rect A
+	//Obliczanie boków kwadratu A
 	leftA = a.x;
 	rightA = a.x + a.w;
 	topA = a.y;
 	bottomA = a.y + a.h;
 
-	//Calculate the sides of rect B
+	//obliczanie boków kwadratu B
 	leftB = b.x;
 	rightB = b.x + b.w;
 	topB = b.y;
 	bottomB = b.y + b.h;
 
-	//If any of the sides from A are outside of B
+	//Jeœ³i któryœ z boków kwadratu A jest poza bokami kwadratu B
 	if (bottomA <= topB)
 	{
 		return false;
@@ -57,7 +57,7 @@ bool checkCollision(SDL_Rect a, SDL_Rect b)
 		return false;
 	}
 
-	//If none of the sides from A are outside B
+	//Jeœli ¿aden z powy¿szych warunków nie jest spe³niony, kwadraty nachodz¹ na siebie
 	return true;
 }
 
@@ -71,7 +71,6 @@ void renderText(SDL_Renderer* renderer, TTF_Font* congratsFont, const std::strin
 	SDL_DestroyTexture(textTexture);
 }
 
-// Font Texture font
 SDL_Texture* createTextTexture(SDL_Renderer* renderer, TTF_Font* font, const std::string& text, SDL_Color color)
 {
 	SDL_Surface* textSurface = TTF_RenderText_Solid(font, text.c_str(), color);
@@ -83,15 +82,12 @@ SDL_Texture* createTextTexture(SDL_Renderer* renderer, TTF_Font* font, const std
 int main()
 {
 
-	// Initialize SDL
 	if (SDL_Init(SDL_INIT_VIDEO) > 0)
 		std::cout << "SDL failed to load" << SDL_GetError() << std::endl;
 
-	// Initialize SDL image library
 	if(!(IMG_Init(IMG_INIT_PNG)))
 		std::cout<< "SDL image PNG failed to load" << SDL_GetError() << std::endl;
 
-	// Initialize SDL audio mixer
 	if (SDL_Init(SDL_INIT_AUDIO) < 0)
 	{
 		printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
@@ -101,24 +97,23 @@ int main()
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
 		std::cout << "SDL_mixer failed to initialize: " << Mix_GetError() << std::endl;
 
-	// Initialize SDL font
 	if (TTF_Init() == -1)
 	{
 		std::cout << "SDL_ttf could not initialize! SDL_ttf Error: " << TTF_GetError() << std::endl;
 		return 1;
 	}
 	
-	// Window Manager
+	// Tworzenie okna
 	RenderWindow window("BEERDASH", 1920, 1080);
 
 
-	// Load textures
+	// Wczytywanie tekstur
 	SDL_Texture* menuTextureLato = window.loadTexture("Resources/wybor_mapy_lato.png");
 	SDL_Texture* menuTextureJesien = window.loadTexture("Resources/wybor_mapy_jesien.png");
 	SDL_Texture* menuTextureZima = window.loadTexture("Resources/wybor_mapy_zima.png");
 	SDL_Texture* playerTexture         = window.loadTexture("Resources/piwo.png");
 
-	// Load Sound
+	// Wczytywanie dzwiêków
 	Mix_Chunk* backgroundMusic = Mix_LoadWAV("Resources/Bossfight - Milky Ways.wav");
 	Mix_Chunk* laughSound = Mix_LoadWAV("Resources/laughing.wav");
 	Mix_Chunk* clapSound = Mix_LoadWAV("Resources/clap.wav");
@@ -178,7 +173,7 @@ int main()
 			mapName = "zima";
 		}
 
-		//Load Font
+		//Wczytywanie czcionek
 		TTF_Font* font = TTF_OpenFont("Resources/NokiaKokia.ttf", 24);
 		if (font == nullptr) {
 			std::cout << "Failed to load font! SDL_ttf Error: " << TTF_GetError() << std::endl;
@@ -192,40 +187,38 @@ int main()
 		SDL_Color textColor = { 255, 255, 255, 255 };
 
 
-		// Play Music
+		// Granie muzyki
 		int musicChannel = Mix_PlayChannel(-1, backgroundMusic, -1);
 
-		// Player initial position
+		// Pocz¹tkowa pozycja gracza
 		GameObject player(Vector2f(20, 90), playerTexture);
 
-		// GameLoop variables
-		bool upsideDown = false;
 		Uint32 lastTime = SDL_GetTicks();
 
-		//Player movement variables
+		//Zmienne poruszania siê gracza
 		float jumpVelocity = -280.0f;
 		float speed = 115.0f;
 		float gravity = 600.0f;
 		float groundLevel = 170.0f;
 		float velocityY = 0.0f;
 
-		if (upsideDown) {
-			float jumpVelocity = 280.0f;
-			float speed = 115.0f;
-			float gravity = -600.0f;
-			float groundLevel = -170.0f;
-			float velocityY = 0.0f;
+		if (mapName == "zima") {
+			speed = 132.5f;
+		}
+
+		if (mapName == "jesien") {
+			speed = 105.0f;
 		}
 
 		bool isJumping = false;
 		bool isOnGround = true;
 
-		// player rotation variables
+		// Zmienne obrotu gracza
 		float targetRotation = 0.0f;
 		float rotationProgress = 0.0f;
 		float rotationDuration = 0.75f;
 
-		// Collision Detection
+		// Flagi kolizji
 		bool collisionDetected = false;
 		bool isDead = false;
 		bool isWon = false;
@@ -233,7 +226,7 @@ int main()
 		int star2Collected = 2;
 		int star3Collected = 4;
 
-		//Camera variables
+		// Zmienne kamerki
 		float cameraX = 0.0f;
 		float cameraSpeed;
 		cameraSpeed = speed;
@@ -246,7 +239,7 @@ int main()
 			lastTime = currentTime;
 
 
-			// Player rotation 
+			// Rotacja Gracza
 			if (isJumping)
 			{
 				rotationProgress += deltaTime / rotationDuration;
@@ -261,7 +254,7 @@ int main()
 				}
 			}
 
-			// Input handling
+			// Obs³ugiwanie inputu z klawiatury
 			while (SDL_PollEvent(&event))
 			{
 				if (event.type == SDL_QUIT)
@@ -288,7 +281,7 @@ int main()
 				}
 			}
 
-			// Jumping Logic
+			// Logika skakania
 			velocityY += gravity * deltaTime;
 			player.getPos().x += speed * deltaTime;
 			player.getPos().y += velocityY * deltaTime;
@@ -300,35 +293,35 @@ int main()
 				isJumping = false;
 			}
 
-			// Camera starts moving afer a certain destination
-			if (player.getPos().x > 100)
+			// If sprawiaj¹cy ¿e kamera porusza siê dopiero po pewnym momencie
+			if (player.getPos().x > 120)
 			{
 				cameraX += cameraSpeed * deltaTime;
 			}
 
-			// Clear screen
+			// Czyszczenie okna
 			window.clear();
 
-			// Render background
+			// Renderowanie t³a
 			window.renderBackground(mapa.backgroundTexture);
 
-			// Render floor tiles
+			// Renderowanie pod³ogi
 			for (GameObject& gt : mapa.groundTiles)
 			{
 				window.render(gt, cameraX);
 			}
 
-			// Render player square
+			// Renderowania gracza
 			SDL_Rect playerRect = window.render(player, cameraX);
 
-			// Render square obstacles
+			// Renderowanie kwadratowych przeszkód
 			for (GameObject& os : mapa.obstacleSquare)
 			{
 
 				SDL_Rect obstacleRect = window.render(os, cameraX);
 				if (checkCollision(playerRect, obstacleRect))
 				{
-					// When the player collides vertically
+					// Gdy gracz zderzy siê z przeszkod¹ pionowo
 					if (player.getPos().y + player.getObjectSize().h > os.getPos().y &&
 						player.getPos().y < os.getPos().y)
 					{
@@ -367,7 +360,7 @@ int main()
 						}
 					}
 
-					// When the player collides horizontally
+					// Gdy gracz zderzy siê z przeszkod¹ poziomo
 
 					else if (player.getPos().x + player.getObjectSize().w > os.getPos().x &&
 						player.getPos().x < os.getPos().x + os.getObjectSize().w)
@@ -385,14 +378,14 @@ int main()
 				collisionDetected = true;
 			}
 
-			// Render triangle Obstacles
+			// Wczytywanie trójk¹tnych przeszkód
 			for (GameObject& ott : mapa.obstacleTriangle)
 			{
 				SDL_Rect obstacleTriangleRect = window.render(ott, cameraX);
 				if (checkCollision(playerRect, obstacleTriangleRect))
 				{
 
-					// When the player collides vertically
+					// Gdy gracz zderzy siê z przeszkod¹ pionowo
 					if (player.getPos().y + player.getObjectSize().h > ott.getPos().y &&
 						player.getPos().y < ott.getPos().y + (ott.getObjectSize().h))
 					{
@@ -404,7 +397,7 @@ int main()
 						player.setRotation(180.0f);
 					}
 
-					// When the player collides horizontally
+					// Gdy gracz zderzy siê z przeszkod¹ poziomo
 					if (player.getPos().x + player.getObjectSize().w > ott.getPos().x &&
 						player.getPos().x < ott.getPos().x + (ott.getObjectSize().w))
 					{
@@ -427,11 +420,8 @@ int main()
 			if (checkCollision(playerRect, starRect1) && star1Collected == 0 /*&& !stars.isStarCollected(mapName, 1)*/)
 			{
 				stars.collectStar1(mapName);
-				if (!stars.isStarCollected(mapName, 1)) 
-				{
-					int starChannel = Mix_PlayChannel(-1, starSound, 0);
-				}
 				star1Collected = 1;
+				int starChannel = Mix_PlayChannel(-1, starSound, 0);
 				mapa.stars.push_back(mapa.stars[0]);
 				if (!mapa.stars.empty()) {
 					mapa.stars.erase(mapa.stars.begin());
@@ -443,12 +433,9 @@ int main()
 			if (checkCollision(playerRect, starRect2) && star2Collected == 2 /*&& !stars.isStarCollected(mapName, 2)*/)
 			{
 				stars.collectStar2(mapName);
-				if (!stars.isStarCollected(mapName, 2))
-				{
-					int starChannel = Mix_PlayChannel(-1, starSound, 0);
-				}
 				star2Collected = 3;
 				mapa.stars.push_back(mapa.stars[0]);
+				int starChannel = Mix_PlayChannel(-1, starSound, 0);
 				if (!mapa.stars.empty()) {
 					mapa.stars.erase(mapa.stars.begin());
 				}
@@ -459,11 +446,8 @@ int main()
 			if (checkCollision(playerRect, starRect3) && star3Collected == 4 /*&& !stars.isStarCollected(mapName, 3)*/)
 			{
 				stars.collectStar3(mapName);
-				if (!stars.isStarCollected(mapName, 3))
-				{
-					int starChannel = Mix_PlayChannel(-1, starSound, 0);
-				}
 				star3Collected = 4;
+				int starChannel = Mix_PlayChannel(-1, starSound, 0);
 				mapa.stars.push_back(mapa.stars[0]);
 				if (!mapa.stars.empty()) {
 					mapa.stars.erase(mapa.stars.begin());
@@ -494,7 +478,6 @@ int main()
 				congratsTexture = createTextTexture(window.getRenderer(), congratsFont, message, textColor);
 			}
 
-			// Render the congrats message if the texture is created
 			if (congratsTexture != nullptr)
 			{
 				int screenWidth = 1920;
@@ -508,7 +491,7 @@ int main()
 				SDL_RenderCopy(window.getRenderer(), congratsTexture, nullptr, &textRect);
 			}
 
-			// When the player arrives at the end
+			// Jeœli gracz dojdzie do mety
 			if (player.getPos().x >= 2115)
 			{
 				speed = 0.0f;
@@ -517,7 +500,7 @@ int main()
 				Mix_HaltChannel(musicChannel);
 			}
 
-			// When the player loses/end level
+			// Jeœli gracz zginie
 			if (speed == 0.0f)
 			{
 				if (player.getPos().x < 2115)
@@ -528,13 +511,12 @@ int main()
 				isJumping = true;
 			}
 
-			// Process count
+			// Licznik postêpu
 			float percentage = (player.getPos().x / 2115.0f) * 100.0f;
 			std::string percentageText = "PROGRESS " + std::to_string(static_cast<int>(percentage)) + "%";
 
 			std::string congratsText = "GRATULACJE";
 
-			// Font rendering
 			SDL_Texture* textTexture = createTextTexture(window.getRenderer(), font, percentageText, textColor);
 
 			if (textTexture != nullptr)
@@ -553,7 +535,6 @@ int main()
 				congratsTexture = createTextTexture(window.getRenderer(), congratsFont, message, textColor);
 			}
 
-			// Render the congrats message if the texture is created
 			if (congratsTexture != nullptr)
 			{
 				int screenWidth = 1920;
@@ -567,7 +548,7 @@ int main()
 				SDL_RenderCopy(window.getRenderer(), congratsTexture, nullptr, &textRect);
 			}
 
-			// Display Render
+			// Pokazanie wyrenderowanych rzeczy
 			window.display();
 
 		}
@@ -577,7 +558,7 @@ int main()
 		Mix_HaltChannel(musicChannel);
 		
 	}
-	// Clean and delete
+	// Czyszczenie pamieci i usuwanie
 	SDL_DestroyTexture(menuTextureLato);
 	SDL_DestroyTexture(playerTexture);
 	
