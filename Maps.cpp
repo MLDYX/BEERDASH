@@ -99,12 +99,50 @@ MapData loadMapaJesien(RenderWindow& window)
 	mapData.obstacleSquare.push_back(GameObject(Vector2f(510, 110), obstacleSquareTexture));
 	mapData.obstacleSquare.push_back(GameObject(Vector2f(600, 110), obstacleSquareTexture));
 	mapData.obstacleSquare.push_back(GameObject(Vector2f(630, 110), obstacleSquareTexture));
+	mapData.obstacleSquare.push_back(GameObject(Vector2f(780, 170), obstacleSquareTexture));
+	mapData.obstacleSquare.push_back(GameObject(Vector2f(870, 140), obstacleSquareTexture));
+	mapData.obstacleSquare.push_back(GameObject(Vector2f(990, 170), obstacleSquareTexture));
+	mapData.obstacleSquare.push_back(GameObject(Vector2f(1020, 170), obstacleSquareTexture));
+	mapData.obstacleSquare.push_back(GameObject(Vector2f(1110, 140), obstacleSquareTexture));
+	mapData.obstacleSquare.push_back(GameObject(Vector2f(1170, 170), obstacleSquareTexture));
+	mapData.obstacleSquare.push_back(GameObject(Vector2f(1230, 140), obstacleSquareTexture));
+	mapData.obstacleSquare.push_back(GameObject(Vector2f(1230, 170), obstacleSquareTexture));
+	mapData.obstacleSquare.push_back(GameObject(Vector2f(1260, 140), obstacleSquareTexture));
+	mapData.obstacleSquare.push_back(GameObject(Vector2f(1290, 140), obstacleSquareTexture));
+	mapData.obstacleSquare.push_back(GameObject(Vector2f(1290, 170), obstacleSquareTexture));
+	mapData.obstacleSquare.push_back(GameObject(Vector2f(1290, 50), obstacleSquareTexture));
+	mapData.obstacleSquare.push_back(GameObject(Vector2f(1320, 50), obstacleSquareTexture));
+	mapData.obstacleSquare.push_back(GameObject(Vector2f(1350, 50), obstacleSquareTexture));
+	mapData.obstacleSquare.push_back(GameObject(Vector2f(1380, 50), obstacleSquareTexture));
+	mapData.obstacleSquare.push_back(GameObject(Vector2f(1380, 80), obstacleSquareTexture));
+	mapData.obstacleSquare.push_back(GameObject(Vector2f(1410, 80), obstacleSquareTexture));
+	mapData.obstacleSquare.push_back(GameObject(Vector2f(1410, 110), obstacleSquareTexture));
+	mapData.obstacleSquare.push_back(GameObject(Vector2f(1410, 140), obstacleSquareTexture));
+	mapData.obstacleSquare.push_back(GameObject(Vector2f(1500, 170), obstacleSquareTexture));
+	mapData.obstacleSquare.push_back(GameObject(Vector2f(1590, 140), obstacleSquareTexture));
+	mapData.obstacleSquare.push_back(GameObject(Vector2f(1620, 170), obstacleSquareTexture));
+	mapData.obstacleSquare.push_back(GameObject(Vector2f(1620, 140), obstacleSquareTexture));
+	mapData.obstacleSquare.push_back(GameObject(Vector2f(1680, 140), obstacleSquareTexture));
+	mapData.obstacleSquare.push_back(GameObject(Vector2f(1770, 140), obstacleSquareTexture));
+	mapData.obstacleSquare.push_back(GameObject(Vector2f(1800, 110), obstacleSquareTexture));
+
+	
 
 	mapData.obstacleTriangle.push_back(GameObject(Vector2f(240, 170.2), obstacleTriangleTexture));
 	mapData.obstacleTriangle.push_back(GameObject(Vector2f(270, 170.2), obstacleTriangleTexture));
 	mapData.obstacleTriangle.push_back(GameObject(Vector2f(360, 110.2), obstacleTriangleTexture));
 	mapData.obstacleTriangle.push_back(GameObject(Vector2f(450, 140.2), obstacleTriangleTexture));
 	mapData.obstacleTriangle.push_back(GameObject(Vector2f(480, 140.2 - 0.4), obstacleTriangleTexture));
+	mapData.obstacleTriangle.push_back(GameObject(Vector2f(660, 170.2), obstacleTriangleTexture));
+	mapData.obstacleTriangle.push_back(GameObject(Vector2f(960, 170.2), obstacleTriangleTexture));
+	/*mapData.obstacleTriangle.push_back(GameObject(Vector2f(1050, 170.2), obstacleTriangleTexture));*/
+	mapData.obstacleTriangle.push_back(GameObject(Vector2f(1080, 170.2), obstacleTriangleTexture));
+	mapData.obstacleTriangle.push_back(GameObject(Vector2f(1170, 140.2), obstacleTriangleTexture));
+	mapData.obstacleTriangle.push_back(GameObject(Vector2f(1140, 170.2), obstacleTriangleTexture));
+	mapData.obstacleTriangle.push_back(GameObject(Vector2f(1200, 170.2), obstacleTriangleTexture));
+	mapData.obstacleTriangle.push_back(GameObject(Vector2f(1320, 170.2), obstacleTriangleTexture));
+	mapData.obstacleTriangle.push_back(GameObject(Vector2f(1650, 140.2), obstacleTriangleTexture));
+	mapData.obstacleTriangle.push_back(GameObject(Vector2f(1770, 110.2), obstacleTriangleTexture));
 
 	mapData.stars.push_back(GameObject(Vector2f(180, 140), starTexture));
 	mapData.stars.push_back(GameObject(Vector2f(680, 140), starTexture));
