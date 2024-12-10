@@ -14,7 +14,9 @@
 #include "Maps.h"
 #include "Stars.h"
 
-
+/////// NAJWA¯NIEJSZE ELEMENTY KODU ///////
+/////// NAJWA¯NIEJSZE ELEMENTY KODU ///////
+/////// NAJWA¯NIEJSZE ELEMENTY KODU ///////
 // Detekcja kolizji
 bool checkCollision(SDL_Rect a, SDL_Rect b)
 {
@@ -102,6 +104,9 @@ int main()
 		std::cout << "SDL_ttf could not initialize! SDL_ttf Error: " << TTF_GetError() << std::endl;
 		return 1;
 	}
+
+	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
+	SDL_GL_SetSwapInterval(1);
 	
 	// Tworzenie okna
 	RenderWindow window("BEERDASH", 1920, 1080);
@@ -119,6 +124,8 @@ int main()
 	Mix_Chunk* clapSound = Mix_LoadWAV("Resources/clap.wav");
 	Mix_Chunk* starSound = Mix_LoadWAV("Resources/smb_coin.wav");
 
+	
+	// G³ówne flagi odpowiadaj¹ce za dzia³anie programu.
 	bool isGameRunning = false;
 	bool menuRunning = true;
 	bool isProgramRunning = true;
@@ -129,7 +136,12 @@ int main()
 	int mapFlag = 0;
 	std::vector<SDL_Texture*> menuTextures = { menuTextureLato, menuTextureJesien, menuTextureZima };
 
+	/////// NAJWA¯NIEJSZE ELEMENTY KODU ///////
+	/////// NAJWA¯NIEJSZE ELEMENTY KODU ///////
+	/////// NAJWA¯NIEJSZE ELEMENTY KODU ///////
+
 	while (isProgramRunning) {
+		// Pêtla sprawiaj¹ca ¿e menu dzia³a
 		while (menuRunning)
 		{
 			window.renderBackground(menuTextures[mapFlag]);
@@ -158,6 +170,9 @@ int main()
 			window.display();
 		}
 
+		/////// NAJWA¯NIEJSZE ELEMENTY KODU ///////
+		/////// NAJWA¯NIEJSZE ELEMENTY KODU ///////
+		// Wybór mapy i jej wczytywanie
 		MapData mapa;
 		std::string mapName;
 		if (mapFlag == 0) {
@@ -222,6 +237,8 @@ int main()
 		bool collisionDetected = false;
 		bool isDead = false;
 		bool isWon = false;
+
+		// Zbieranie gwiazdek
 		int star1Collected = 0;
 		int star2Collected = 2;
 		int star3Collected = 4;
@@ -232,6 +249,10 @@ int main()
 		cameraSpeed = speed;
 		SDL_Texture* congratsTexture = nullptr;
 
+		/////// NAJWA¯NIEJSZE ELEMENTY KODU ///////
+		/////// NAJWA¯NIEJSZE ELEMENTY KODU ///////
+		/////// NAJWA¯NIEJSZE ELEMENTY KODU ///////
+		// Pêtla gry
 		while (isGameRunning && !menuRunning)
 		{
 			Uint32 currentTime = SDL_GetTicks();
@@ -281,6 +302,10 @@ int main()
 				}
 			}
 
+
+			/////// NAJWA¯NIEJSZE ELEMENTY KODU ///////
+			/////// NAJWA¯NIEJSZE ELEMENTY KODU ///////
+			// /////// NAJWA¯NIEJSZE ELEMENTY KODU ///////
 			// Logika skakania
 			velocityY += gravity * deltaTime;
 			player.getPos().x += speed * deltaTime;
@@ -314,6 +339,10 @@ int main()
 			// Renderowania gracza
 			SDL_Rect playerRect = window.render(player, cameraX);
 
+			/////// NAJWA¯NIEJSZE ELEMENTY KODU ///////
+			/////// NAJWA¯NIEJSZE ELEMENTY KODU ///////
+			/////// NAJWA¯NIEJSZE ELEMENTY KODU ///////
+
 			// Renderowanie kwadratowych przeszkód
 			for (GameObject& os : mapa.obstacleSquare)
 			{
@@ -321,32 +350,37 @@ int main()
 				SDL_Rect obstacleRect = window.render(os, cameraX);
 				if (checkCollision(playerRect, obstacleRect))
 				{
-					// Gdy gracz zderzy siê z przeszkod¹ pionowo
+					// Gdy gracz zderzy siê z przeszkod¹ pionowo od góry
 					if (player.getPos().y + player.getObjectSize().h > os.getPos().y &&
 						player.getPos().y < os.getPos().y)
 					{
 						velocityY = 0;
 						isJumping = false;
+						// Poziom 0 - ground
 						if (player.getPos().y >= 160)
 						{
 							player.getPos().y = 170;
 							isOnGround = true;
 						}
+						// Poziom 1
 						else if (player.getPos().y <= 150 && player.getPos().y >= 130)
 						{
 							player.getPos().y = 140;
 							isOnGround = true;
 						}
+						// Poziom 2
 						else if (player.getPos().y >= 100 && player.getPos().y <= 120)
 						{
 							player.getPos().y = 110;
 							isOnGround = true;
 						}
+						// Poziom 3
 						else if (player.getPos().y >= 70 && player.getPos().y <= 90)
 						{
 							player.getPos().y = 80;
 							isOnGround = true;
 						}
+						// Gdy gracz zderzy siê z przeszkod¹ pinowo od do³u
 						else
 						{
 							isOnGround = false;
@@ -377,6 +411,10 @@ int main()
 
 				collisionDetected = true;
 			}
+
+			/////// NAJWA¯NIEJSZE ELEMENTY KODU ///////
+			/////// NAJWA¯NIEJSZE ELEMENTY KODU ///////
+			/////// NAJWA¯NIEJSZE ELEMENTY KODU ///////
 
 			// Wczytywanie trójk¹tnych przeszkód
 			for (GameObject& ott : mapa.obstacleTriangle)
@@ -467,11 +505,13 @@ int main()
 			
 			renderText(window.getRenderer(), font, "OCENA " + oss.str(), textColor, 1710, 10);
 
+			// Renderownie znaku finish
 			for (GameObject& fin : mapa.finish)
 			{
 				window.render(fin, cameraX);
 			}
 
+			//Tekst wyœwietlany po œmierci
 			if (isDead && congratsTexture == nullptr)
 			{
 				std::string message = "PIWO SIE WYLALO";

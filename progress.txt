@@ -1,6 +1,6 @@
-lato:1,2,3,
-jesien:1,2,3,
-zima:1,2,
-latoStarCount:5
-jesienStarCount:5
-zimaStarCount:4
+jesien:1,2,
+lato:1,2,
+zima:1,2,3,
+latoStarCount:4
+jesienStarCount:4
+zimaStarCount:5

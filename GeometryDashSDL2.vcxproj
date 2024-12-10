@@ -80,8 +80,8 @@
     <LibraryPath>D:\C++\GeometryDashSDL2\Libraries\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\wikto\OneDrive\Pulpit\GEODASH CODE\GeometryDashSDL2\Libraries\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\wikto\OneDrive\Pulpit\GEODASH CODE\GeometryDashSDL2\Libraries\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\wikto\BEERDASH\Libraries\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\wikto\BEERDASH\Libraries\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>D:\C++\GeometryDashSDL2\Libraries\include;$(IncludePath)</IncludePath>
