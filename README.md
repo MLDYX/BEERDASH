@@ -31,7 +31,7 @@
 ## **Installation**
 1. Clone the repository:
    ```bash
-   git clone https://github.com/<your-username>/beerdash.git
+   git clone https://github.com/MLDYX/beerdash.git
    cd beerdash
    ```
 2. Install the required SDL2 libraries.
